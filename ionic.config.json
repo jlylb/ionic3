@@ -1,0 +1,14 @@
+{
+  "name": "ionic2-app-base",
+  "app_id": "",
+  "type": "ionic-angular",
+  "integrations": {
+    "cordova": {}
+  },
+  "proxies": [
+    {
+      "path": "/api",
+      "proxyUrl": "http://www.uapi.cc/api.php/v1"
+    }
+  ]
+}
