@@ -34,6 +34,20 @@
 
   </div>
 
+  <div class="categories">
+    
+        <ion-grid>
+          <ion-row wrap>
+            <ion-col text-center tappable col-3 *ngFor="let c of categories" (click)="goTest(c)">
+              <ion-icon name="{{c.icon}}" color="primary"></ion-icon>
+              <span class="title">{{c.title}}</span>
+            </ion-col>
+          </ion-row>
+        </ion-grid>
+    
+      </div>
+
+
   <ion-item-divider class="t-header" color="light"> 年会礼服2017年新款 </ion-item-divider>
   <ion-products [products]="products"></ion-products>
 

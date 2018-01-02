@@ -76,4 +76,8 @@ goProductList(item) {
   this.navCtrl.push('ProductListPage', { item: item });
 }
 
+goTest(item) {
+  this.navCtrl.push('TestPage', { item: item });
+}
+
 }
