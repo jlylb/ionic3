@@ -15,6 +15,6 @@
 
 <ion-content padding>
 
-  <ion-poem [products]='products' [items]='items'></ion-poem>
+  <ion-poem [products]='products' [items]='items' (receive)='goData($event)'></ion-poem>
 
 </ion-content>

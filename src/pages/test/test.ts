@@ -36,17 +36,16 @@ export class TestPage {
     
   }
 
-  doInfinite(infiniteScroll) {
-    console.log('Begin async operation');
-
-    setTimeout(() => {
-      for (let i = 0; i < 30; i++) {
-        this.items.push( this.items.length );
-      }
-
-      console.log('Async operation has ended');
-      infiniteScroll.complete();
-    }, 500);
+  goData(ev){
+    if(ev.isclick==1){
+      this.items=[];
+    }
+    for (let i = 0; i < 30; i++) {
+      this.items.push( this.items.length );
+    }
+    console.log(ev,this.items)
   }
+
+ 
 
 }

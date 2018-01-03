@@ -3,7 +3,7 @@
 
   <ion-row>
     <ion-col col-3>
-        <button ion-item *ngFor="let item of products">
+        <button ion-item *ngFor="let item of products" (click)='select($event)'>
             {{ item }}
           </button> 
     </ion-col>
