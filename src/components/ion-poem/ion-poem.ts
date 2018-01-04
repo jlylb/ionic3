@@ -1,4 +1,4 @@
-import { Component, Input, Output, EventEmitter} from '@angular/core';
+import { Component, Input, Output, EventEmitter } from '@angular/core';
 
 
 @Component({
@@ -8,36 +8,41 @@ import { Component, Input, Output, EventEmitter} from '@angular/core';
 export class IonPoemComponent {
 
   @Input() products: Array<any>;
-  @Input() items: Array<any>;
-  @Output() receive: EventEmitter<any>=new EventEmitter<any>();
 
-  text: string;
+  @Input() items: Array<any>;
+
+  @Output() receive: EventEmitter<any> = new EventEmitter<any>();
+
+  page: number = 1;
+
+  @Input() selectedItem: any;
 
   constructor() {
     console.log('Hello IonPoemComponent Component');
-    this.text = 'Hello World';
   }
 
   doInfinite(infiniteScroll) {
-    console.log('Begin async operation');
 
-    setTimeout(() => {
-      // for (let i = 0; i < 30; i++) {
-      //   this.items.push( this.items.length );
-      // }
+    this.page++;
 
-      this.receive.emit({page:1,title:'A',isclick:0});
-      console.log('Async operation has ended');
-      infiniteScroll.complete();
-    }, 500);
+    let page = this.page;
+
+    this.receive.emit({ page: page, letter: this.selectedItem, isclick: 0 });
+
+    infiniteScroll.complete();
+
   }
 
-  select(ev){
-    let st=ev.target.firstElementChild.innerText;
-    console.log(ev,st)
+  select(ev,item) {
+ 
+    console.log(ev,item)
 
-    this.receive.emit({page:1,title:st,isclick:1});
-  
+    this.selectedItem=item;
+
+    this.page = 1;
+
+    this.receive.emit({ page: this.page, letter: item, isclick: 1 });
+
 
   }
 
