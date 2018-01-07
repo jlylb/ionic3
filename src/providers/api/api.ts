@@ -27,7 +27,8 @@ export class AppGlobal {
 @Injectable()
 export class Api {
 
-  url: string = '/api';
+  //url: string = '/api';
+  url: string = 'http://www.uapi.cc/api.php/v1';
 
   constructor(
     public http: HttpClient

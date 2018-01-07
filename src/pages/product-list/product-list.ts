@@ -1,6 +1,9 @@
-import { Component } from '@angular/core';
+import { Component, OnInit, AfterViewInit, ViewChild } from '@angular/core';
 import { IonicPage, NavController, NavParams } from 'ionic-angular';
 import { Api } from '../../providers/provider';
+import 'rxjs/add/operator/map';
+import 'rxjs/add/operator/throttleTime';
+import { IonPoemComponent } from '../../components/ion-poem/ion-poem';
 
 
 @IonicPage()
@@ -8,7 +11,7 @@ import { Api } from '../../providers/provider';
   selector: 'page-product-list',
   templateUrl: 'product-list.html',
 })
-export class ProductListPage {
+export class ProductListPage implements OnInit, AfterViewInit {
 
   hasmore = true;
 
@@ -16,9 +19,13 @@ export class ProductListPage {
 
   selectedItem: any;
 
-  firstitem: any;
+  firstitem: any = '';
+
+  @ViewChild('poem') poem: IonPoemComponent;
 
   items: Array<any> = [];
+
+  isAuthor: boolean = true;
 
 
   constructor(
@@ -27,41 +34,88 @@ export class ProductListPage {
     , public api: Api
   ) {
     this.selectedItem = this.navParams.get("item");
+    if('isAuthor' in this.selectedItem){
+        this.isAuthor = this.selectedItem.isAuthor;
+    }
+  }
+
+  ngOnInit() {
+    this.getProducts();
+  }
+
+  ngAfterViewInit() {
+
   }
 
   ionViewDidLoad() {
-    this.getProducts();
-    this.getFavoritesItems();
     console.log('ionViewDidLoad ProductListPage');
   }
 
-  getFavoritesItems() {
+
+  getProducts() {
+    let param: any = {};
+    
+    if(this.isAuthor){
+      param.category = this.selectedItem.title;
+      param.group = 'author_letter';
+      param.field = 'author_letter';
+    }else{
+      param.group = 'title_letter';
+      param.field = 'title_letter';
+      param.author = this.selectedItem.author;
+      param.category = this.selectedItem.category;
+    }
 
     this.api
-      .get('poems/search', { title: this.selectedItem.title })
+      .get('poems/search', param)
+      .map((res: any) => {
+        return res.map(function (v) {
+          return v.author_letter||v.title_letter;
+        });
+      })
       .subscribe((data) => {
         console.log(data)
-        this.items = this.items.concat(data);
+        this.products = data;
+        this.firstitem = this.products[0];
+        this.poem.select(this.firstitem)
+
       });
   }
 
-  getProducts() {
-    for (let i = 65; i < 91; i++) {
-      this.products.push(String.fromCharCode(i));
-    }
-    this.firstitem = this.products[0];
-  }
-
   goData(ev) {
+    console.log(ev)
     if (ev.isclick == 1) {
       this.items = [];
     }
-    ev.title = this.selectedItem.title;
+    let param: any = {};
+    param.category = this.selectedItem.title;
+    param.page = ev.page;
+    param.letter = ev.letter;
+    let group:any;
+    let field:any;
+    //this.isAuthor=ev.isAuthor;
+    if(this.isAuthor){
+      group = 'author';
+      field = 'author_letter,author,category';
+    }else{
+      group = '';
+      field = 'title,author_letter,author,category,content,zhujie';
+      param.category = this.selectedItem.category;
+      param.letter = '';
+      param.title_letter = ev.letter;
+      param.author = this.selectedItem.author;
+    }
+    param.group = group;
+    param.field = field;
     this.api
-      .get('poems/search', ev)
+      .get('poems/search', param)
+      .throttleTime(1000)
       .subscribe((data) => {
         console.log(data)
         this.items = this.items.concat(data);
+        if (ev.loading) {
+          ev.loading.dismiss();
+        }
       });
     console.log(ev, this.items)
   }

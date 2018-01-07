@@ -1,11 +1,15 @@
-import { Component, Input, Output, EventEmitter } from '@angular/core';
+import { Component, Input, Output, EventEmitter, OnInit, AfterViewInit } from '@angular/core';
+import { LoadingController, NavController } from 'ionic-angular';
+//import { Observable } from 'rxjs/Observable';
+//import 'rxjs/add/observable/of';
+
 
 
 @Component({
   selector: 'ion-poem',
   templateUrl: 'ion-poem.html'
 })
-export class IonPoemComponent {
+export class IonPoemComponent implements OnInit, AfterViewInit {
 
   @Input() products: Array<any>;
 
@@ -17,8 +21,23 @@ export class IonPoemComponent {
 
   @Input() selectedItem: any;
 
-  constructor() {
+  @Input() isAuthor: boolean = true;
+
+
+  constructor(
+    private loadingCtrl: LoadingController
+    , private navCtrl: NavController
+  ) {
     console.log('Hello IonPoemComponent Component');
+  }
+
+
+  ngOnInit() {
+
+  }
+
+  ngAfterViewInit() {
+
   }
 
   doInfinite(infiniteScroll) {
@@ -33,17 +52,30 @@ export class IonPoemComponent {
 
   }
 
-  select(ev,item) {
- 
-    console.log(ev,item)
+  select(item) {
 
-    this.selectedItem=item;
+    let loading = this.loadingCtrl.create({
+      spinner: 'bubbles',
+      content: '加载数据.....'
+    });
+
+    loading.present();
+
+    this.selectedItem = item;
 
     this.page = 1;
 
-    this.receive.emit({ page: this.page, letter: item, isclick: 1 });
+    this.receive.emit({ page: this.page, letter: item, isclick: 1, loading: loading });
 
+  }
 
+  goAuthors(item){
+    item.isAuthor = false;
+    this.navCtrl.push('ProductListPage', { item: item });
+  }
+
+  goDetail(item){
+    this.navCtrl.push('PoemDetailPage', { item: item });
   }
 
 }

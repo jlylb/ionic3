@@ -3,14 +3,24 @@
 
   <ion-row>
     <ion-col col-3>
-        <button ion-item *ngFor="let item of products" (click)='select($event,item)' [ngClass]="{active:selectedItem==item}">
+        <button ion-item *ngFor="let item of products" (click)='select(item)' [ngClass]="{active:selectedItem==item}">
             {{ item }}
           </button> 
     </ion-col>
 
     <ion-col col-9>
-        <ion-list>
-            <ion-item *ngFor="let i of items">{{i.author}}</ion-item>
+        <ion-list [ngSwitch]="isAuthor">
+            <ng-container *ngSwitchCase="false">
+                <ion-item *ngFor="let i of items">
+                    <span (click)='goDetail(i)'> {{i.title}}</span>
+                </ion-item>
+            </ng-container>
+            <ng-container *ngSwitchCase="true">
+                <ion-item *ngFor="let i of items">
+                    <span (click)='goAuthors(i)'>{{i.author}}</span>
+                </ion-item>
+            </ng-container>
+
           </ion-list>
          
           <ion-infinite-scroll (ionInfinite)="doInfinite($event)">
