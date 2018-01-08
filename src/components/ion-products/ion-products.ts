@@ -17,7 +17,7 @@ export class IonProductsComponent {
 
   goDetails(item) {
     console.debug('go details...')
-    this.navCtrl.push('ProductDetailsPage', { item: item });
+    this.navCtrl.push('PoemDetailPage', { item: item });
   }
 
 }

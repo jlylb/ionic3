@@ -1,0 +1,12 @@
+<ion-item-divider class="t-header" color="light">
+    <ion-row wrap>
+      <ion-col col-3>每日推荐</ion-col>
+      <ion-col col-9>
+        <p class="refresher" (click)='refresh()'>
+          <ion-icon name="refresh" color="primary"></ion-icon>换一批
+        </p>
+      </ion-col>
+    </ion-row>
+  </ion-item-divider>
+  <ion-spinner name="bubbles" *ngIf="spinner"></ion-spinner>
+  <ion-products [products]="products" *ngIf="!spinner"></ion-products>

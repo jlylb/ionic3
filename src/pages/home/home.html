@@ -13,13 +13,13 @@
   </ion-row>
 
   <ion-slides>
-      <ion-slide *ngFor="let item of slides">
-          <img src="{{item.url}}" alt="">
-        <div class="cover"></div>
-        <span class="title">{{item.title}}</span>
-      </ion-slide>
-    </ion-slides>
-  
+    <ion-slide *ngFor="let item of slides">
+      <img src="{{item.url}}" alt="">
+      <div class="cover"></div>
+      <span class="title">{{item.title}}</span>
+    </ion-slide>
+  </ion-slides>
+
 
   <div class="categories">
 
@@ -36,8 +36,7 @@
 
 
 
-  <ion-item-divider class="t-header" color="light"> 年会礼服2017年新款 </ion-item-divider>
-  <ion-products [products]="products"></ion-products>
+<refresh [products]="products" (refreshEvent)='getdata()' [spinner]='spinner'></refresh>
 
 
 

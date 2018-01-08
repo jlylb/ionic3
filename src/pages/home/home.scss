@@ -39,6 +39,12 @@ page-home {
         /*border: 1px solid #efefef;*/
       }
     }
+    p.refresher{
+      float: right;
+      .icon{
+        font-size: 14px !important;
+      }
+    }
     .icon {
       border-radius: 100px;
       color: white;
@@ -46,6 +52,7 @@ page-home {
       font-size: 36px !important;
       padding: 5px;
     }
+
     .c1 {
       background-color: orangered;
     }
@@ -92,4 +99,5 @@ page-home {
     }
 
   }
+
 

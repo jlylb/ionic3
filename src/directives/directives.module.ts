@@ -1,8 +1,11 @@
 import { NgModule } from '@angular/core';
 import { AsHtmlDirective } from './as-html/as-html';
+import { RefreshDirective } from './refresh/refresh';
 @NgModule({
-	declarations: [AsHtmlDirective],
+	declarations: [AsHtmlDirective,
+    RefreshDirective],
 	imports: [],
-	exports: [AsHtmlDirective]
+	exports: [AsHtmlDirective,
+    RefreshDirective]
 })
 export class DirectivesModule {}
