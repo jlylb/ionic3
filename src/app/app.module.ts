@@ -3,12 +3,14 @@ import { BrowserModule } from '@angular/platform-browser';
 import { IonicApp, IonicModule, IonicErrorHandler } from 'ionic-angular';
 import { MyApp } from './app.component';
 import { IonicStorageModule } from '@ionic/storage';
-import { HttpClientModule } from '@angular/common/http';
+import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 
 
 import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
 import { Api } from '../providers/provider';
+import { AuthProvider } from '../providers/auth/auth';
+import { UserProvider } from '../providers/user/user';
 
 @NgModule({
   declarations: [
@@ -28,7 +30,10 @@ import { Api } from '../providers/provider';
     StatusBar,
     SplashScreen,
     {provide: ErrorHandler, useClass: IonicErrorHandler},
-    Api
+    Api,
+    { provide: HTTP_INTERCEPTORS, useClass: AuthProvider, multi:true },
+    UserProvider,
+    
   ]
 })
 export class AppModule {}

@@ -11,5 +11,12 @@
 
     <ion-poem #poem [products]='products' [items]='items' [selectedItem]='firstitem' [isAuthor]='isAuthor' (receive)='goData($event)'>
     </ion-poem>
-    
+    <ion-fab bottom right >
+        <button ion-fab>Share</button>
+        <ion-fab-list side="top">
+          <button ion-fab>Facebook</button>
+          <button ion-fab>Twitter</button>
+          <button ion-fab>Youtube</button>
+        </ion-fab-list>
+      </ion-fab>
 </ion-content>

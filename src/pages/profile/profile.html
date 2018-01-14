@@ -1,0 +1,48 @@
+<ion-header>
+
+  <ion-navbar>
+    <ion-title>基本信息</ion-title>
+  </ion-navbar>
+
+</ion-header>
+
+
+<ion-content padding>
+
+  <form novalidate [formGroup]="profile" (ngSubmit)="onSubmit(profile)">
+
+    <ion-list>
+
+      <ion-item>
+        <ion-label stacked>姓名</ion-label>
+        <ion-input type="text"  formControlName="name"></ion-input>
+      </ion-item>
+
+      <ion-item>
+        <ion-label stacked>邮箱(公共)</ion-label>
+        <ion-input type="email"  formControlName="public_email"></ion-input>
+      </ion-item>
+
+      <ion-item>
+        <ion-label stacked>网站</ion-label>
+        <ion-input type="text" formControlName="website"></ion-input>
+      </ion-item>
+
+      <ion-item>
+        <ion-label stacked>所在地</ion-label>
+        <ion-input type="text"  formControlName="location"></ion-input>
+      </ion-item>
+
+      <ion-item>
+        <ion-label stacked>个性签名</ion-label>
+        <ion-input type="text"  formControlName="bio"></ion-input>
+      </ion-item>
+
+    </ion-list>
+
+    <div padding>
+        <button ion-button block>保存</button>
+      </div>
+  </form>
+
+</ion-content>
