@@ -1,24 +1,22 @@
-import { Component, ViewChild } from '@angular/core';
-import { IonicPage,ModalController,Tabs } from 'ionic-angular';
+import { Component, ViewChild, Renderer2, AfterViewInit, ElementRef } from '@angular/core';
+import { IonicPage, ModalController, Tabs, Events } from 'ionic-angular';
 import { UserProvider } from '../../providers/user/user';
 
-//import { AboutPage } from '../about/about';
-//import { ContactPage } from '../contact/contact';
-//import { HomePage } from '../home/home';
 import { Tab1Root } from '../pages';
 import { Tab2Root } from '../pages';
-import { Tab3Root } from '../pages';
+
 
 @IonicPage()
 @Component({
   templateUrl: 'tabs.html'
 })
-export class TabsPage {
+export class TabsPage implements AfterViewInit {
 
   @ViewChild('mytabs') tabRef: Tabs;
 
-  tab1Root:any = Tab1Root;
-  tab2Root:any = Tab2Root;
+
+  tab1Root: any = Tab1Root;
+  tab2Root: any = Tab2Root;
   //tab3Root:any = '';
 
   tab1Title = "首页";
@@ -28,18 +26,50 @@ export class TabsPage {
   constructor(
     public modalCtrl: ModalController
     , public user: UserProvider
+    , public events: Events
+    , public renderer: Renderer2
+    , private elementRef: ElementRef
   ) {
 
   }
 
-  login(ev){
-    console.log(ev,this.tabRef)
-    this.user.isLogin().then((res:any)=>{
+  ionViewDidLoad() {
+
+
+    let tab = this.queryElement(this.elementRef.nativeElement, '.tabbar');
+
+    this.events.subscribe('tabs', (res) => {
+
+      if (res == 'hide') {
+        console.log(1111)
+        this.renderer.setStyle(tab, 'display', 'none');
+      } else {
+        console.log(2222)
+        this.renderer.removeStyle(tab, 'display')
+        //this.renderer.setStyle(tab, 'display', 'block');
+      }
+
+    });
+
+  }
+
+  queryElement(elem: HTMLElement, q: string): HTMLElement {
+    return <HTMLElement>elem.querySelector(q);
+  }
+
+  ngAfterViewInit() {
+
+  }
+
+  login(ev: any) {
+
+    this.user.isLogin().then((res: any) => {
       console.log(res)
-      if(res){
-        ev.root='ContactPage';
+      if (res) {
+        ev.root = 'ContactPage';
         this.tabRef.select(ev);
-      }else{
+      } else {
+        ev.root = '';
         this.presentProfileModal(ev);
       }
     });
@@ -47,7 +77,7 @@ export class TabsPage {
 
 
   presentProfileModal(ctab) {
-    let profileModal = this.modalCtrl.create('LoginPage', {tab:this.tabRef,ctab:ctab},{enableBackdropDismiss:true});
+    let profileModal = this.modalCtrl.create('LoginPage', { tab: this.tabRef, ctab: ctab }, { enableBackdropDismiss: true });
     profileModal.present();
   }
 

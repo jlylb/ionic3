@@ -1,0 +1,19 @@
+<ion-header>
+
+  <ion-navbar>
+    <ion-title>设置头像</ion-title>
+  </ion-navbar>
+
+</ion-header>
+
+
+<ion-content padding>
+  
+  <button ion-button (click)="selectAvatar(1)">从摄像头拍照</button>
+  <button ion-button (click)="selectAvatar(2)">从相册选择</button>
+
+  <div>
+    <img [src]="path" />
+  </div>
+
+</ion-content>

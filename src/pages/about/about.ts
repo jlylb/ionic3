@@ -1,5 +1,5 @@
 import { Component, OnInit, AfterViewInit, ViewChild } from '@angular/core';
-import { IonicPage, NavController, NavParams } from 'ionic-angular';
+import { IonicPage, NavController, NavParams, LoadingController, Loading  } from 'ionic-angular';
 import { Api } from '../../providers/provider';
 import 'rxjs/add/operator/map';
 import 'rxjs/add/operator/throttleTime';
@@ -26,11 +26,14 @@ export class AboutPage implements OnInit, AfterViewInit {
 
   isAuthor: boolean = true;
 
+  loading: Loading;
+
 
   constructor(
     public navCtrl: NavController
     , public navParams: NavParams
     , public api: Api
+    , private loadingCtrl: LoadingController
   ) {
     this.selectedItem = this.navParams.get("item") || {};
     if ('isAuthor' in this.selectedItem) {
@@ -85,6 +88,12 @@ export class AboutPage implements OnInit, AfterViewInit {
     console.log(ev)
     if (ev.isclick == 1) {
       this.items = [];
+      this.loading = this.loadingCtrl.create({
+        spinner: 'bubbles',
+        content: '加载数据.....'
+      });
+
+      this.loading.present();
     }
     let param: any = {};
     param.category = this.selectedItem.title || '';
@@ -112,11 +121,10 @@ export class AboutPage implements OnInit, AfterViewInit {
       .subscribe((data) => {
         console.log(data)
         this.items = this.items.concat(data);
-        if (ev.loading) {
-          ev.loading.dismiss();
+        if (this.loading) {
+          this.loading.dismiss();
         }
       });
-    console.log(ev, this.items)
   }
 
 }

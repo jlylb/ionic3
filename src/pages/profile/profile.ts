@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { IonicPage, NavController, NavParams } from 'ionic-angular';
 import { FormBuilder, FormGroup } from '@angular/forms';
+import { Api } from '../../providers/provider';
+import 'rxjs/add/operator/share';
 
 
 @IonicPage()
@@ -16,6 +18,7 @@ export class ProfilePage implements OnInit {
     public navCtrl: NavController
     , public navParams: NavParams
     , private fb: FormBuilder
+    , public api: Api
   ) {
   }
 
@@ -27,10 +30,29 @@ export class ProfilePage implements OnInit {
       location: [''],
       bio: [''],
     });
+    let profile = this.navParams.get('profile')||{};
+    this.profile.patchValue(profile.profile||{});
   }
 
   onSubmit() {
     console.log(this.profile.value, this.profile.valid);
+    if (!this.profile.valid) {
+      return false;
+    }
+    let seq = this.api.post('users/profile', this.profile.value).share();
+
+    seq.subscribe((res: any) => {
+
+      console.log(res);
+      if (res.status == 1) {
+        console.log(res.data)
+
+      } else {
+
+      }
+    }, err => {
+      console.error('ERROR', err);
+    });
   }
 
 }

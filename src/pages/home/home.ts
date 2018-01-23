@@ -46,7 +46,7 @@ export class HomePage {
       { title: '魏晋', icon: "help-circle" },
       { title: '南北朝', icon: "image" },
       { title: '隋朝', icon: "information-circle" },
-      { title: '唐朝', icon: "leaf" },
+      { title: '唐', icon: "leaf" },
       { title: '宋朝', icon: "locate" },
       { title: '金朝', icon: "mail" },
       { title: '辽朝', icon: "moon" },

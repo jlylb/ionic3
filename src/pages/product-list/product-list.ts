@@ -1,5 +1,5 @@
 import { Component, OnInit, AfterViewInit, ViewChild } from '@angular/core';
-import { IonicPage, NavController, NavParams } from 'ionic-angular';
+import { IonicPage, NavController, NavParams, LoadingController, Loading } from 'ionic-angular';
 import { Api } from '../../providers/provider';
 import 'rxjs/add/operator/map';
 import 'rxjs/add/operator/throttleTime';
@@ -27,15 +27,18 @@ export class ProductListPage implements OnInit, AfterViewInit {
 
   isAuthor: boolean = true;
 
+  loading: Loading;
+
 
   constructor(
     public navCtrl: NavController
     , public navParams: NavParams
     , public api: Api
+    , private loadingCtrl: LoadingController
   ) {
     this.selectedItem = this.navParams.get("item");
-    if('isAuthor' in this.selectedItem){
-        this.isAuthor = this.selectedItem.isAuthor;
+    if ('isAuthor' in this.selectedItem) {
+      this.isAuthor = this.selectedItem.isAuthor;
     }
   }
 
@@ -51,15 +54,20 @@ export class ProductListPage implements OnInit, AfterViewInit {
     console.log('ionViewDidLoad ProductListPage');
   }
 
+  ionViewWillLeave() {
+
+
+  }
+
 
   getProducts() {
     let param: any = {};
-    
-    if(this.isAuthor){
+
+    if (this.isAuthor) {
       param.category = this.selectedItem.title;
       param.group = 'author_letter';
       param.field = 'author_letter';
-    }else{
+    } else {
       param.group = 'title_letter';
       param.field = 'title_letter';
       param.author = this.selectedItem.author;
@@ -70,7 +78,7 @@ export class ProductListPage implements OnInit, AfterViewInit {
       .get('poems/search', param)
       .map((res: any) => {
         return res.map(function (v) {
-          return v.author_letter||v.title_letter;
+          return v.author_letter || v.title_letter;
         });
       })
       .subscribe((data) => {
@@ -80,24 +88,32 @@ export class ProductListPage implements OnInit, AfterViewInit {
         this.poem.select(this.firstitem)
 
       });
+
+
   }
 
   goData(ev) {
     console.log(ev)
     if (ev.isclick == 1) {
       this.items = [];
+      this.loading = this.loadingCtrl.create({
+        spinner: 'bubbles',
+        content: '加载数据.....'
+      });
+
+      this.loading.present();
     }
     let param: any = {};
     param.category = this.selectedItem.title;
     param.page = ev.page;
     param.letter = ev.letter;
-    let group:any;
-    let field:any;
+    let group: any;
+    let field: any;
     //this.isAuthor=ev.isAuthor;
-    if(this.isAuthor){
+    if (this.isAuthor) {
       group = 'author';
       field = 'author_letter,author,category';
-    }else{
+    } else {
       group = '';
       field = 'title,author_letter,author,category,content,zhujie';
       param.category = this.selectedItem.category;
@@ -113,11 +129,10 @@ export class ProductListPage implements OnInit, AfterViewInit {
       .subscribe((data) => {
         console.log(data)
         this.items = this.items.concat(data);
-        if (ev.loading) {
-          ev.loading.dismiss();
+        if (this.loading) {
+          this.loading.dismiss();
         }
       });
-    console.log(ev, this.items)
   }
 
 }

@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { IonicPage, NavController, NavParams, ViewController,App } from 'ionic-angular';
+import { IonicPage, NavController, NavParams, ViewController,App, Events } from 'ionic-angular';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Api } from '../../providers/provider';
 import { Storage } from '@ionic/storage';
@@ -29,6 +29,7 @@ export class LoginPage implements OnInit {
     , public api: Api
     , public storage: Storage
     , public app: App
+    , public events: Events
   ) {
     console.log('UserId',this.navParams.get('tab'));
   }
@@ -58,6 +59,7 @@ export class LoginPage implements OnInit {
       if (res.status == 1) {
         console.log(res.data)
         this.storage.set('token', res.data);
+        this.events.publish('user:token', res.data);
         this.navParams.get('ctab').root='ContactPage';
         this.navParams.get('tab').select(this.navParams.get('ctab'));
         this.dismiss();

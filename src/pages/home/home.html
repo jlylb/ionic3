@@ -25,7 +25,7 @@
 
     <ion-grid>
       <ion-row wrap>
-        <ion-col text-center tappable col-3 *ngFor="let c of categories" (click)="goProductList(c)">
+        <ion-col text-center  tappable col-3 *ngFor="let c of categories" (click)="goProductList(c)">
           <ion-icon name="{{c.icon}}" color="primary"></ion-icon>
           <span class="title">{{c.title}}</span>
         </ion-col>

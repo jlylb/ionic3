@@ -12,6 +12,11 @@ import { Api } from '../providers/provider';
 import { AuthProvider } from '../providers/auth/auth';
 import { UserProvider } from '../providers/user/user';
 
+import { Camera } from '@ionic-native/camera';
+import { File } from '@ionic-native/file';
+import { FileTransfer } from '@ionic-native/file-transfer';
+
+
 @NgModule({
   declarations: [
     MyApp
@@ -33,6 +38,9 @@ import { UserProvider } from '../providers/user/user';
     Api,
     { provide: HTTP_INTERCEPTORS, useClass: AuthProvider, multi:true },
     UserProvider,
+    Camera,
+    File,
+    FileTransfer,
     
   ]
 })

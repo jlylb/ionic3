@@ -1,43 +1,68 @@
-<!--
-  Generated template for the PoemDetailPage page.
+<ion-header no-border>
 
-  See http://ionicframework.com/docs/components/#navigation for more info on
-  Ionic pages and navigation.
--->
-<ion-header>
+  <ion-navbar float-left>
 
-  <ion-navbar>
-    <ion-title>{{selectedItem.title}}</ion-title>
   </ion-navbar>
 
+  <ion-toolbar>
+    <ion-segment [(ngModel)]="item">
+      <ion-segment-button value="content" (ionSelect)='slideTo(0)'>
+        内容
+      </ion-segment-button>
+      <ion-segment-button value="zhujie" (ionSelect)='slideTo(1)'>
+        解析
+      </ion-segment-button>
+      <ion-segment-button value="comment" (ionSelect)='slideTo(2)'>
+        评论
+      </ion-segment-button>
+    </ion-segment>
+  </ion-toolbar>
 </ion-header>
 
 
-<ion-content padding>
 
-  <div padding>
-    <ion-segment [(ngModel)]="item">
-      <ion-segment-button value="content">
-        内容
-      </ion-segment-button>
-      <ion-segment-button value="zhujie">
-        解析
-      </ion-segment-button>
-    </ion-segment>
-  </div>
 
-  <div [ngSwitch]="item">
-    <p *ngSwitchCase="'content'" [innerHTML]="showHtml(selectedItem.content)">
+  <ion-slides #myslides  spaceBetween=20 (ionSlideDidChange)="slideChanged()">
 
-    </p>
+    <ion-slide>
+      <ion-content padding>
+      <div>
+        <p>{{selectedItem.title}}</p>
+        <p [innerHTML]="showHtml(selectedItem.content)"></p>
 
-    <p *ngSwitchCase="'zhujie'">
+        <ion-item-divider class="t-header" color="light">
+          评论
+        </ion-item-divider>
+      </div>
+        <ion-list>
+          <div padding *ngFor='let aa of comments'>
+            <ion-item no-lines>
+              <ion-avatar item-start>
+                <img src="assets/img/marty-avatar.png">
+              </ion-avatar>
+              <h2>{{aa.aa}}</h2>
+              <h2 item-end>18:00</h2>
+            </ion-item>
+            <p text-wrap padding-left>I've had a pretty messed up day. If we just...</p>
+          </div>
+        </ion-list>
 
-       
+        <button ion-button text-center color="secondary" (click)="goMore($event)">查看更多</button>
+      
+      </ion-content>
+
+    </ion-slide>
+
+    <ion-slide>
+      <ion-content padding>
       {{selectedItem.zhujie}}
+    </ion-content>
+    </ion-slide>
 
-    </p>
-
-  </div>
-
+    <ion-slide>
+      <ion-content padding>
+1111111
 </ion-content>
+    </ion-slide>
+
+  </ion-slides>
