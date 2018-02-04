@@ -1,24 +1,33 @@
-import { Component, OnInit  } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { IonicPage, NavController, NavParams } from 'ionic-angular';
-import { FormBuilder, FormGroup } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Api } from '../../providers/provider';
 import 'rxjs/add/operator/share';
 
-/**
- * Generated class for the AccountPage page.
- *
- * See https://ionicframework.com/docs/components/#navigation for more info on
- * Ionic pages and navigation.
- */
 
 @IonicPage()
 @Component({
   selector: 'page-account',
   templateUrl: 'account.html',
 })
-export class AccountPage implements OnInit{
+export class AccountPage implements OnInit {
 
   account: FormGroup;
+
+  message = {
+    username: {
+      required: '用户名必须填写',
+    },
+    email: {
+      required: '邮箱必须填写',
+    },
+    current_password: {
+      required: '当前密码必须填写',
+    },
+    new_password: {
+      required: '新密码必须填写',
+    }
+  };
 
   constructor(
     public navCtrl: NavController
@@ -34,12 +43,12 @@ export class AccountPage implements OnInit{
 
   ngOnInit() {
     this.account = this.fb.group({
-      username: [''],
-      email: [''],
+      username: ['',Validators.required],
+      email: ['',[Validators.required,Validators.email]],
       new_password: [''],
-      current_password: ['']
+      current_password: ['',Validators.required]
     });
-    let profile = this.navParams.get('profile')||{};
+    let profile = this.navParams.get('profile') || {};
     this.account.patchValue(profile);
   }
 
@@ -48,6 +57,7 @@ export class AccountPage implements OnInit{
     if (!this.account.valid) {
       return false;
     }
+    let loading = this.api.loading();
     let seq = this.api.post('users/account', this.account.value).share();
 
     seq.subscribe((res: any) => {
@@ -55,12 +65,14 @@ export class AccountPage implements OnInit{
       console.log(res);
       if (res.status == 1) {
         console.log(res.data)
-
+        this.api.toast(res.data);
       } else {
-
+        this.api.addError(res.data,this);
       }
     }, err => {
       console.error('ERROR', err);
+    }, () => {
+      loading.dismiss();
     });
   }
 

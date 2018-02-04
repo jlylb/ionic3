@@ -1,11 +1,14 @@
 import { NgModule } from '@angular/core';
 import { AsHtmlDirective } from './as-html/as-html';
 import { RefreshDirective } from './refresh/refresh';
+import { IonMessageDirective } from './ion-message/ion-message';
 @NgModule({
 	declarations: [AsHtmlDirective,
-    RefreshDirective],
+    RefreshDirective,
+    IonMessageDirective],
 	imports: [],
 	exports: [AsHtmlDirective,
-    RefreshDirective]
+    RefreshDirective,
+    IonMessageDirective]
 })
 export class DirectivesModule {}

@@ -40,9 +40,11 @@ export class ContactPage implements OnInit {
   }
 
   ionViewWillEnter() {
+    let loading=this.api.loading();
     this.api.get('users/user-profile').share().subscribe((res: any) => {
       console.log(res)
       this.profile = res;
+      loading.dismiss();
     });
 
   }
@@ -52,12 +54,14 @@ export class ContactPage implements OnInit {
   }
 
   logout() {
-    this.user.logout().then(() => {
-      this.api.alert('退出成功', () => {
-        this.navCtrl.parent.getSelected().root = '';
-        this.navCtrl.parent.select(0)
+    this.api.alert('确认要退出吗?',()=>{
+      this.user.logout().then(() => {
+        this.api.toast('退出成功', () => {
+          this.navCtrl.parent.getSelected().root = '';
+          this.navCtrl.parent.select(0)
+        });
       });
-    });
+    })
   }
 
 

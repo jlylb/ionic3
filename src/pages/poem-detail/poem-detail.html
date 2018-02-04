@@ -22,10 +22,10 @@
 
 
 
-  <ion-slides #myslides  spaceBetween=20 (ionSlideDidChange)="slideChanged()">
+<ion-slides #myslides spaceBetween=20 (ionSlideDidChange)="slideChanged()">
 
-    <ion-slide>
-      <ion-content padding>
+  <ion-slide>
+    <ion-content padding>
       <div>
         <p>{{selectedItem.title}}</p>
         <p [innerHTML]="showHtml(selectedItem.content)"></p>
@@ -34,35 +34,46 @@
           评论
         </ion-item-divider>
       </div>
-        <ion-list>
-          <div padding *ngFor='let aa of comments'>
-            <ion-item no-lines>
-              <ion-avatar item-start>
-                <img src="assets/img/marty-avatar.png">
-              </ion-avatar>
-              <h2>{{aa.aa}}</h2>
-              <h2 item-end>18:00</h2>
-            </ion-item>
-            <p text-wrap padding-left>I've had a pretty messed up day. If we just...</p>
-          </div>
-        </ion-list>
+      <!-- <ion-comment [items]='comments'></ion-comment> -->
 
-        <button ion-button text-center color="secondary" (click)="goMore($event)">查看更多</button>
-      
-      </ion-content>
+      <!-- <button ion-button text-center color="secondary" (click)="goMore($event)">查看更多</button> -->
 
-    </ion-slide>
+    </ion-content>
 
-    <ion-slide>
-      <ion-content padding>
+  </ion-slide>
+
+  <ion-slide>
+    <ion-content padding>
       {{selectedItem.zhujie}}
     </ion-content>
-    </ion-slide>
+  </ion-slide>
 
-    <ion-slide>
-      <ion-content padding>
-1111111
-</ion-content>
-    </ion-slide>
+  <ion-slide>
+    <ion-content padding>
+      <ion-refresher (ionRefresh)="doRefresh($event)">
+        <ion-refresher-content pullingIcon="arrow-dropdown" pullingText="下拉刷新" refreshingSpinner="circles" refreshingText="正在刷新...">
+        </ion-refresher-content>
+      </ion-refresher>
 
-  </ion-slides>
+      <ion-comment [items]='comments'></ion-comment>
+
+      <ion-infinite-scroll (ionInfinite)="doInfinite($event)">
+        <ion-infinite-scroll-content loadingSpinner="bubbles" loadingText="加载数据..."></ion-infinite-scroll-content>
+      </ion-infinite-scroll>
+    </ion-content>
+  </ion-slide>
+
+</ion-slides>
+
+<ion-footer>
+  <ion-toolbar>
+    <form novalidate [formGroup]="comment" (ngSubmit)="onSubmit(comment)">
+      <ion-input type="text" placeholder="评论" formControlName="content"></ion-input>
+      <form-message  controlName="content" [message]='message'></form-message>
+      <ion-buttons end>
+        <button ion-button color="danger">提交</button>
+      </ion-buttons>
+    </form>
+  </ion-toolbar>
+
+</ion-footer>

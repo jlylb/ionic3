@@ -22,21 +22,25 @@
           <ion-item>
             <ion-label stacked>用户名</ion-label>
             <ion-input type="text"  formControlName="username"></ion-input>
+            <form-message item-end controlName="username" [message]='message'></form-message>
           </ion-item>
     
           <ion-item>
             <ion-label stacked>邮箱</ion-label>
             <ion-input type="email"  formControlName="email"></ion-input>
+            <form-message item-end controlName="email" [message]='message'></form-message>
           </ion-item>
     
           <ion-item>
             <ion-label stacked>新密码</ion-label>
-            <ion-input type="text" formControlName="new_password"></ion-input>
+            <ion-input type="password" formControlName="new_password"></ion-input>
+            <form-message item-end controlName="new_password" [message]='message'></form-message>
           </ion-item>
     
           <ion-item>
             <ion-label stacked>当前密码</ion-label>
-            <ion-input type="text"  formControlName="current_password"></ion-input>
+            <ion-input type="password"  formControlName="current_password"></ion-input>
+            <form-message item-end controlName="current_password" [message]='message'></form-message>
           </ion-item>
     
     

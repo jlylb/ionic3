@@ -27,86 +27,106 @@ export class AppGlobal {
 @Injectable()
 export class Api {
 
-  url: string = '/api';
-  //url: string = 'http://www.seephp.com/api.php/v1';
+    url: string = '/api';
+    //url: string = 'http://www.seephp.com/api.php/v1';
 
-  constructor(
-    public http: HttpClient
-    , public alertCtrl: AlertController
-    , public toastCtrl: ToastController
-    , public loadingCtrl: LoadingController
-  ) {
-  }
-
-  get(endpoint: string, params?: any, reqOpts?: any) {
-    if (!reqOpts) {
-      reqOpts = {
-        params: new HttpParams()
-      };
+    constructor(
+        public http: HttpClient
+        , public alertCtrl: AlertController
+        , public toastCtrl: ToastController
+        , public loadingCtrl: LoadingController
+    ) {
     }
 
-    // Support easy query params for GET requests
-    if (params) {
-      reqOpts.params = params;
-      /** for (let k in params) {
-        reqOpts.params.set(k, params[k]);
-        }*/
+    get(endpoint: string, params?: any, reqOpts?: any) {
+        if (!reqOpts) {
+            reqOpts = {
+                params: new HttpParams()
+            };
+        }
+
+        // Support easy query params for GET requests
+        if (params) {
+            reqOpts.params = params;
+            /** for (let k in params) {
+              reqOpts.params.set(k, params[k]);
+              }*/
+        }
+        console.log(this.url + '/' + endpoint)
+
+        return this.http.get(this.url + '/' + endpoint, reqOpts);
     }
-    console.log(this.url + '/' + endpoint)
 
-    return this.http.get(this.url + '/' + endpoint, reqOpts);
-  }
+    post(endpoint: string, body: any, reqOpts?: any) {
+        return this.http.post(this.url + '/' + endpoint, body, reqOpts);
+    }
 
-  post(endpoint: string, body: any, reqOpts?: any) {
-    return this.http.post(this.url + '/' + endpoint, body, reqOpts);
-  }
+    put(endpoint: string, body: any, reqOpts?: any) {
+        return this.http.put(this.url + '/' + endpoint, body, reqOpts);
+    }
 
-  put(endpoint: string, body: any, reqOpts?: any) {
-    return this.http.put(this.url + '/' + endpoint, body, reqOpts);
-  }
+    delete(endpoint: string, reqOpts?: any) {
+        return this.http.delete(this.url + '/' + endpoint, reqOpts);
+    }
 
-  delete(endpoint: string, reqOpts?: any) {
-    return this.http.delete(this.url + '/' + endpoint, reqOpts);
-  }
+    patch(endpoint: string, body: any, reqOpts?: any) {
+        return this.http.put(this.url + '/' + endpoint, body, reqOpts);
+    }
 
-  patch(endpoint: string, body: any, reqOpts?: any) {
-    return this.http.put(this.url + '/' + endpoint, body, reqOpts);
-  }
+    alert(message, callback?) {
+        if (callback) {
+            let alert = this.alertCtrl.create({
+                title: '提示',
+                message: message,
+                buttons: [{
+                    text: "确定",
+                    handler: data => {
+                        callback();
+                    }
+                }]
+            });
+            alert.present();
+        } else {
+            let alert = this.alertCtrl.create({
+                title: '提示',
+                message: message,
+                buttons: ["确定"]
+            });
+            alert.present();
+        }
+    }
 
-  alert(message, callback?) {
-    if (callback) {
-        let alert = this.alertCtrl.create({
-            title: '提示',
+    toast(message, callback?) {
+        let toast = this.toastCtrl.create({
             message: message,
-            buttons: [{
-                text: "确定",
-                handler: data => {
-                    callback();
-                }
-            }]
+            duration: 2000,
+            dismissOnPageChange: true,
         });
-        alert.present();
-    } else {
-        let alert = this.alertCtrl.create({
-            title: '提示',
-            message: message,
-            buttons: ["确定"]
-        });
-        alert.present();
+        toast.present();
+        if (callback) {
+            callback();
+        }
     }
-}
 
-toast(message, callback?) {
-    let toast = this.toastCtrl.create({
-        message: message,
-        duration: 2000,
-        dismissOnPageChange: true,
-    });
-    toast.present();
-    if (callback) {
-        callback();
+    loading(opt: { [key: string]: any } = {}, callback?) {
+        let loading = this.loadingCtrl.create({
+            content: opt.message || '数据加载中...'
+        });
+        loading.onDidDismiss(() => {
+            if (callback) {
+                callback();
+            }
+        });
+        loading.present();
+        return loading;
     }
-}
+
+    addError(errors,self,fbname='account'){
+        for (let field in errors) {
+            self.message[field].validateField = errors[field][0];
+            self[fbname].get(field).setErrors({ validateField: true });
+          } 
+    }
 
 
 }

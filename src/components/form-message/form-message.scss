@@ -1,0 +1,14 @@
+form-message {
+    div{
+        position: absolute;
+        right: 100px;
+        top: 16px;
+    }
+}
+ion-item form-message {
+    div{
+        position: absolute;
+        right: 0;
+        top:auto
+    }
+}

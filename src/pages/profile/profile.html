@@ -16,26 +16,31 @@
       <ion-item>
         <ion-label stacked>姓名</ion-label>
         <ion-input type="text"  formControlName="name"></ion-input>
+        <form-message item-end controlName="name" [message]='message'></form-message>
       </ion-item>
 
       <ion-item>
         <ion-label stacked>邮箱(公共)</ion-label>
         <ion-input type="email"  formControlName="public_email"></ion-input>
+        <form-message item-end controlName="public_email" [message]='message'></form-message>
       </ion-item>
 
       <ion-item>
         <ion-label stacked>网站</ion-label>
         <ion-input type="text" formControlName="website"></ion-input>
+        <form-message item-end controlName="website" [message]='message'></form-message>
       </ion-item>
 
       <ion-item>
         <ion-label stacked>所在地</ion-label>
         <ion-input type="text"  formControlName="location"></ion-input>
+        <form-message item-end controlName="location" [message]='message'></form-message>
       </ion-item>
 
       <ion-item>
         <ion-label stacked>个性签名</ion-label>
         <ion-input type="text"  formControlName="bio"></ion-input>
+        <form-message item-end controlName="bio" [message]='message'></form-message>
       </ion-item>
 
     </ion-list>

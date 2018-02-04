@@ -4,5 +4,7 @@
     <ion-icon name="refresh"></ion-icon>换一批
   </button>
 </ion-item-divider>
+<ion-scroll scrollY="true" [ngStyle]="{'height':'200px'}">
 <ion-spinner name="bubbles" *ngIf="spinner"></ion-spinner>
 <ion-products [products]="products" *ngIf="!spinner"></ion-products>
+</ion-scroll>

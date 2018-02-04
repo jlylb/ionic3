@@ -70,19 +70,18 @@ export class HomePage {
   }
 
   getdata() {
-    let that = this;
+
+    let page = Math.ceil(Math.random() * 100);
     this.spinner = true;
-    setTimeout(function () {
-      that.spinner = false;
-      that.products = [
-        { title: Math.ceil(Math.random() * 1000), author: "苏轼", content: "22222222222222", zhujie: "499" },
-        { title: Math.ceil(Math.random() * 1000), author: "苏轼", content: "555555555555555", zhujie: "499" },
-        { title: Math.ceil(Math.random() * 1000), author: "苏轼", content: "7777777777777777", zhujie: "499" },
-        { title: Math.ceil(Math.random() * 1000), author: "苏轼", content: "9999999999999999", zhujie: "111499" },
-      ];
-
-
-    }, 1000)
+    let req = this.api.get('poems/search', { page: page, "per-page": 4 });
+    req.subscribe((res: any) => {
+      console.log(res)
+      this.products = res;
+    }, err => {
+      console.error(err)
+    }, () => {
+      this.spinner = false;
+    })
 
   }
 

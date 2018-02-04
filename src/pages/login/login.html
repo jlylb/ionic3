@@ -21,13 +21,15 @@
           <ion-item>
             <ion-label stacked>用户名或邮箱</ion-label>
             <ion-input type="text"  formControlName="login"></ion-input>
+            <form-message item-end controlName="login" [message]='message'></form-message>
           </ion-item>
-    
+          
           <ion-item>
             <ion-label stacked>密码</ion-label>
             <ion-input type="password"  formControlName="password"></ion-input>
+            <form-message item-end controlName="password" [message]='message'></form-message>
           </ion-item>
-
+          
           <ion-item>
               <ion-label>记住密码</ion-label>
               <ion-toggle formControlName="rememberMe"></ion-toggle>

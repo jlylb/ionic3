@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { IonicPage, NavController, NavParams } from 'ionic-angular';
-import { FormBuilder, FormGroup } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Api } from '../../providers/provider';
 import 'rxjs/add/operator/share';
 
@@ -14,6 +14,15 @@ export class ProfilePage implements OnInit {
 
   profile: FormGroup;
 
+  message = {
+    public_email: {
+      email: '邮箱格式不正确',
+    },
+    website: {
+      url: 'url格式不正确',
+    }
+  };
+
   constructor(
     public navCtrl: NavController
     , public navParams: NavParams
@@ -25,13 +34,13 @@ export class ProfilePage implements OnInit {
   ngOnInit() {
     this.profile = this.fb.group({
       name: [''],
-      public_email: [''],
+      public_email: ['', Validators.email],
       website: [''],
       location: [''],
       bio: [''],
     });
-    let profile = this.navParams.get('profile')||{};
-    this.profile.patchValue(profile.profile||{});
+    let profile = this.navParams.get('profile') || {};
+    this.profile.patchValue(profile.profile || {});
   }
 
   onSubmit() {
@@ -39,6 +48,7 @@ export class ProfilePage implements OnInit {
     if (!this.profile.valid) {
       return false;
     }
+    let loading = this.api.loading({ message: '正确提交，请稍候....' });
     let seq = this.api.post('users/profile', this.profile.value).share();
 
     seq.subscribe((res: any) => {
@@ -46,12 +56,14 @@ export class ProfilePage implements OnInit {
       console.log(res);
       if (res.status == 1) {
         console.log(res.data)
-
+        this.api.toast(res.data)
       } else {
-
+        this.api.addError(res.data, this, 'profile');
       }
     }, err => {
       console.error('ERROR', err);
+    }, () => {
+      loading.dismiss();
     });
   }
 

@@ -115,7 +115,7 @@ export class ProductListPage implements OnInit, AfterViewInit {
       field = 'author_letter,author,category';
     } else {
       group = '';
-      field = 'title,author_letter,author,category,content,zhujie';
+      field = 'id,title,author_letter,author,category,content,zhujie';
       param.category = this.selectedItem.category;
       param.letter = '';
       param.title_letter = ev.letter;

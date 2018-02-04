@@ -1,6 +1,9 @@
 page-poem-detail {
     .toolbar{
         width: auto;
+        form{
+            display: flex;
+        }
     }
     .swiper-container{
         overflow:inherit;
@@ -15,5 +18,12 @@ page-poem-detail {
     }
     ion-content{
         top:56px;
+    }
+
+    [formcontrolname].ng-invalid.ng-touched{
+        border: 1px solid #ff0000;
+    }
+    [formcontrolname].ng-invalid.ng-dirty{
+        border: 1px solid #ff0000;
     }
 }
